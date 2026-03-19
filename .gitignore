@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+.next/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Keys (NEVER commit private keys)
+apps/auth-server/keys/
+*.pem
+
+# Database
+*.db
+*.sqlite
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Prisma generated
+packages/db/prisma/generated/

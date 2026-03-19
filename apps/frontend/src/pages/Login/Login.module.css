@@ -1,0 +1,506 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,212,255,0.06) 0%, transparent 60%);
+}
+
+.wrap {
+  width: 100%;
+  max-width: 460px;
+  padding: 40px 20px;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.logoIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--accent), var(--purple));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  box-shadow: 0 0 32px rgba(0,212,255,0.3);
+}
+
+.logoName {
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -1px;
+  background: linear-gradient(135deg, var(--accent), var(--purple));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logoSub {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--muted);
+  letter-spacing: 3px;
+}
+
+/* Card */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 36px 32px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+  animation: fadeIn 0.35s ease;
+}
+
+.cardTitle {
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+
+.cardSub {
+  font-size: 13px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 28px;
+}
+
+/* Fields */
+.field {
+  margin-bottom: 20px;
+}
+
+.label {
+  display: block;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 2px;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  font-family: inherit;
+}
+
+.input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
+}
+
+.inputError {
+  border-color: var(--red) !important;
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.1) !important;
+}
+
+.inputSuccess {
+  border-color: var(--green) !important;
+  box-shadow: 0 0 0 3px rgba(16,185,129,0.1) !important;
+}
+
+.hintOk {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--green);
+  margin-top: 6px;
+}
+
+.hintErr {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--red);
+  margin-top: 6px;
+}
+
+/* Biometric CTA */
+.bioBtn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--accent), var(--purple));
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,212,255,0.25);
+  transition: all 0.15s;
+  font-family: 'Syne', sans-serif;
+}
+
+.bioBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 40px rgba(0,212,255,0.35);
+}
+
+.bioBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.bioBtnInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.bioBtnIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.pulsering {
+  position: absolute;
+  inset: -2px;
+  border-radius: 16px;
+  border: 2px solid rgba(0,212,255,0.4);
+  animation: pulseRing 2s ease-in-out infinite;
+}
+
+/* Divider */
+.dividerOr {
+  text-align: center;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--dim);
+  margin: 18px 0;
+  position: relative;
+}
+
+.dividerOr::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--border);
+  z-index: 0;
+}
+
+.dividerOr span,
+.dividerOr {
+  position: relative;
+  z-index: 1;
+}
+
+.dividerOrText {
+  background: var(--card);
+  padding: 0 10px;
+  position: relative;
+  z-index: 1;
+  text-transform: uppercase;
+}
+
+/* Secondary Buttons */
+.btnSecondary {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Syne', sans-serif;
+}
+
+.btnSecondary:hover {
+  border-color: var(--accent);
+  background: rgba(0,212,255,0.05);
+}
+
+.btnSecondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* OTP Inputs */
+.otpRow {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.otpBox {
+  width: 46px;
+  height: 54px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  text-align: center;
+  font-size: 22px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
+  color: var(--text);
+  outline: none;
+  transition: all 0.2s;
+}
+
+.otpBox:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(0,212,255,0.1);
+}
+
+.otpFilled {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* OTP timer */
+.timerBar {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.timerFill {
+  height: 100%;
+  background: var(--amber);
+  border-radius: 2px;
+  transition: width 1s linear;
+}
+
+.timerText {
+  text-align: center;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--amber);
+  margin-bottom: 16px;
+}
+
+/* Primary button */
+.btnPrimary {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, var(--accent), var(--purple));
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Syne', sans-serif;
+}
+
+.btnPrimary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 32px rgba(0,212,255,0.25);
+}
+
+.btnPrimary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Ghost button */
+.btnGhost {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Syne', sans-serif;
+}
+
+.btnGhost:hover {
+  color: var(--accent);
+  background: rgba(0,212,255,0.04);
+}
+
+/* Danger button */
+.btnDanger {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(239,68,68,0.3);
+  background: rgba(239,68,68,0.08);
+  color: var(--red);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'Syne', sans-serif;
+}
+
+.btnDanger:hover {
+  background: rgba(239,68,68,0.15);
+}
+
+/* Bio status states */
+.bioStatus {
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.bioScanning {
+  background: rgba(0,212,255,0.05);
+  border: 1px solid rgba(0,212,255,0.15);
+}
+
+.bioSuccess {
+  background: rgba(16,185,129,0.06);
+  border: 1px solid rgba(16,185,129,0.2);
+}
+
+.bioFailed {
+  background: rgba(239,68,68,0.05);
+  border: 1px solid rgba(239,68,68,0.15);
+}
+
+.bioStatusIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.bioStatusTitle {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.bioStatusSub {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.emailBadge {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--accent);
+}
+
+.backLink {
+  width: 100%;
+  margin-top: 12px;
+  background: transparent;
+  border: none;
+  color: var(--dim);
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.backLink:hover {
+  color: var(--accent);
+}
+
+/* Footer */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 20px;
+  font-size: 12px;
+}
+
+.footerLink {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 12px;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+.footerLink:hover {
+  opacity: 0.8;
+}
+
+/* Status bar */
+.statusBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-top: 16px;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Spinner */
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}

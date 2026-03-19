@@ -1,0 +1,318 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────
+// CORE AUTH
+// ─────────────────────────────────────────────
+
+model User {
+  id            String   @id @default(uuid())
+  email         String   @unique
+  studentId     String?  @unique @map("student_id")
+  name          String
+  role          Role     @default(STUDENT)
+  isActive      Boolean  @default(true) @map("is_active")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  credentials   FidoCredential[]
+  sessions      Session[]
+  otpRecords    OtpRecord[]
+  auditLogs     AuditLog[]
+
+  // Portal data
+  lmsEnrollments    LmsCourse[]
+  feeRecords        FeeRecord[]
+  hostelAllotment   HostelAllotment?
+  transportPass     TransportPass?
+  bookIssues        BookIssue[]
+  messages          Message[]     @relation("MessageRecipient")
+  sentMessages      Message[]     @relation("MessageSender")
+
+  @@map("users")
+}
+
+enum Role {
+  STUDENT
+  FACULTY
+  ADMIN
+}
+
+model FidoCredential {
+  id                String   @id @default(uuid())
+  userId            String   @map("user_id")
+  credentialId      String   @unique @map("credential_id")
+  publicKey         String   @map("public_key")    // base64 encoded
+  counter           BigInt   @default(0)
+  deviceType        String?  @map("device_type")   // "platform" | "cross-platform"
+  backedUp          Boolean  @default(false) @map("backed_up")
+  transports        String[] // ["internal","hybrid","usb","nfc","ble"]
+  aaguid            String?
+  createdAt         DateTime @default(now()) @map("created_at")
+  lastUsedAt        DateTime? @map("last_used_at")
+  isRevoked         Boolean  @default(false) @map("is_revoked")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("fido_credentials")
+}
+
+model Session {
+  id                String   @id @default(uuid())
+  userId            String   @map("user_id")
+  jti               String   @unique          // JWT ID for revocation
+  refreshToken      String   @unique @map("refresh_token")
+  authMethod        AuthMethod @map("auth_method")
+  expiresAt         DateTime @map("expires_at")
+  refreshExpiresAt  DateTime @map("refresh_expires_at")
+  isRevoked         Boolean  @default(false) @map("is_revoked")
+  ipAddress         String?  @map("ip_address")
+  userAgent         String?  @map("user_agent")
+  createdAt         DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+enum AuthMethod {
+  FIDO2_WEBAUTHN
+  OTP
+  REFRESH_TOKEN
+}
+
+model OtpRecord {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  otpHash     String   @map("otp_hash")      // bcrypt hash
+  purpose     String   @default("login")
+  expiresAt   DateTime @map("expires_at")
+  isUsed      Boolean  @default(false) @map("is_used")
+  attempts    Int      @default(0)
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("otp_records")
+}
+
+model AuditLog {
+  id          String   @id @default(uuid())
+  userId      String?  @map("user_id")
+  action      String
+  status      AuditStatus
+  metadata    Json?
+  ipAddress   String?  @map("ip_address")
+  userAgent   String?  @map("user_agent")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("audit_logs")
+}
+
+enum AuditStatus {
+  SUCCESS
+  FAILURE
+  WARNING
+}
+
+// ─────────────────────────────────────────────
+// LMS PORTAL
+// ─────────────────────────────────────────────
+
+model LmsCourse {
+  id          String  @id @default(uuid())
+  userId      String  @map("user_id")
+  courseCode  String  @map("course_code")
+  courseName  String  @map("course_name")
+  faculty     String
+  credits     Int
+  semester    Int
+  attendance  Float   @default(0)
+  grade       String?
+
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assignments Assignment[]
+
+  @@map("lms_courses")
+}
+
+model Assignment {
+  id          String   @id @default(uuid())
+  courseId    String   @map("course_id")
+  title       String
+  dueDate     DateTime @map("due_date")
+  maxMarks    Int      @map("max_marks")
+  obtainedMarks Int?   @map("obtained_marks")
+  status      String   @default("pending") // pending | submitted | graded
+
+  course LmsCourse @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@map("assignments")
+}
+
+// ─────────────────────────────────────────────
+// ERP PORTAL
+// ─────────────────────────────────────────────
+
+model FeeRecord {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  description String
+  amount      Float
+  dueDate     DateTime @map("due_date")
+  paidDate    DateTime? @map("paid_date")
+  status      FeeStatus @default(PENDING)
+  semester    Int
+  fine        Float    @default(0)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("fee_records")
+}
+
+enum FeeStatus {
+  PAID
+  PENDING
+  OVERDUE
+}
+
+model HostelAllotment {
+  id          String  @id @default(uuid())
+  userId      String  @unique @map("user_id")
+  block       String
+  roomNumber  String  @map("room_number")
+  bedNumber   Int     @map("bed_number")
+  joinDate    DateTime @map("join_date")
+  monthlyRent Float   @map("monthly_rent")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("hostel_allotments")
+}
+
+model TransportPass {
+  id          String  @id @default(uuid())
+  userId      String  @unique @map("user_id")
+  routeNumber String  @map("route_number")
+  routeName   String  @map("route_name")
+  pickupPoint String  @map("pickup_point")
+  passExpiry  DateTime @map("pass_expiry")
+  isActive    Boolean @default(true) @map("is_active")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("transport_passes")
+}
+
+// ─────────────────────────────────────────────
+// LIBRARY PORTAL
+// ─────────────────────────────────────────────
+
+model Book {
+  id          String  @id @default(uuid())
+  title       String
+  author      String
+  isbn        String  @unique
+  category    String
+  totalCopies Int     @map("total_copies") @default(1)
+  available   Int     @default(1)
+
+  issues BookIssue[]
+
+  @@map("books")
+}
+
+model BookIssue {
+  id          String   @id @default(uuid())
+  userId      String   @map("user_id")
+  bookId      String   @map("book_id")
+  issueDate   DateTime @default(now()) @map("issue_date")
+  dueDate     DateTime @map("due_date")
+  returnDate  DateTime? @map("return_date")
+  status      IssueStatus @default(ISSUED)
+  fine        Float    @default(0)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  book Book @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@map("book_issues")
+}
+
+enum IssueStatus {
+  ISSUED
+  RETURNED
+  OVERDUE
+}
+
+// ─────────────────────────────────────────────
+// EMAIL PORTAL
+// ─────────────────────────────────────────────
+
+model Message {
+  id          String   @id @default(uuid())
+  senderId    String   @map("sender_id")
+  recipientId String   @map("recipient_id")
+  subject     String
+  body        String
+  isRead      Boolean  @default(false) @map("is_read")
+  isStarred   Boolean  @default(false) @map("is_starred")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  sender    User @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  recipient User @relation("MessageRecipient", fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@map("messages")
+}
+
+// ─────────────────────────────────────────────
+// ADMIN MODULES
+// ─────────────────────────────────────────────
+
+model FeeStructure {
+  id           String @id @default(uuid())
+  program      String
+  semester     Int
+  tuitionFee   Float
+  examFee      Float
+  labFee       Float
+  hostelFee    Float
+  transportFee Float
+  updatedAt    DateTime @updatedAt
+  updatedBy    String?
+
+  @@unique([program, semester])
+  @@map("fee_structure")
+}
+
+model SystemPolicy {
+  id           String   @id @default(uuid())
+  key          String   @unique
+  value        String
+  updatedAt    DateTime @updatedAt
+  updatedBy    String?
+
+  @@map("system_policies")
+}
+
+model FeePaymentReceipt {
+  id              String   @id @default(uuid())
+  feeRecordId     String   @unique
+  receiptNumber   String   @unique
+  paymentMode     String
+  transactionRef  String?
+  collectedBy     String   // admin user id
+  printedAt       DateTime?
+  createdAt       DateTime @default(now())
+
+  @@map("fee_payment_receipts")
+}

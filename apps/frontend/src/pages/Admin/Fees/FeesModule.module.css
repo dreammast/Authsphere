@@ -1,0 +1,252 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.tabs {
+  display: flex;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1px;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 12px 20px;
+  color: var(--muted);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+}
+
+.tabs button:hover {
+  color: var(--fg);
+}
+
+.activeTab {
+  color: var(--accent) !important;
+  border-bottom-color: var(--accent) !important;
+}
+
+.content {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  min-height: 400px;
+}
+
+/* OverviewGrid */
+.overviewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+}
+
+.statCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border);
+  padding: 24px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.statCard h4 {
+  margin: 0 0 12px 0;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.amount {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--green);
+}
+
+.danger {
+  color: var(--red);
+}
+
+/* Collect Form */
+.collectForm {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.searchSection, .paymentSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.searchSection h3, .paymentSection h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 12px;
+}
+
+.inputGroup {
+  display: flex;
+  gap: 12px;
+}
+
+.inputGroup input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border);
+  color: var(--fg);
+  padding: 12px 16px;
+  border-radius: 8px;
+  outline: none;
+  font-family: inherit;
+}
+
+.inputGroup input:focus {
+  border-color: var(--accent);
+}
+
+.inputGroup button, .submitBtn, .btnSecondary {
+  background: var(--accent);
+  color: #000;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.inputGroup button:hover, .submitBtn:hover {
+  opacity: 0.9;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.formRow label {
+  font-size: 0.9rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.formRow input, .formRow select {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--border);
+  color: var(--fg);
+  padding: 12px 16px;
+  border-radius: 8px;
+  outline: none;
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.formRow input:focus, .formRow select:focus {
+  border-color: var(--accent);
+}
+
+.submitBtn {
+  margin-top: 12px;
+}
+
+/* Receipt */
+.receiptCard {
+  background: rgba(74, 222, 128, 0.05);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.receiptHeader {
+  color: var(--green);
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.receiptBody {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 24px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+}
+
+.receiptBody p {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.receiptBody strong {
+  color: var(--muted);
+}
+
+.btnSecondary {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--fg);
+  border: 1px solid var(--border);
+}
+
+.btnSecondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Structure List */
+.structureList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sectionHeader h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th, .table td {
+  text-align: left;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.table th {
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--muted);
+  font-weight: 500;
+}
