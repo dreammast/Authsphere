@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://agent-69c4cdd8ed09e9ed8a1--super-moonbeam-bb8973.netlify.app/"><img src="https://img.shields.io/badge/🔐-AuthSphere-blueviolet?style=for-the-badge&labelColor=1a1a2e" alt="AuthSphere" /></a>
+  <a href="https://agent-69c4d5cec72babfd6--curious-semolina-3cd5c4.netlify.app/"><img src="https://img.shields.io/badge/🔐-AuthSphere-blueviolet?style=for-the-badge&labelColor=1a1a2e" alt="AuthSphere" /></a>
 </p>
 
 <h1 align="center">AuthSphere — Campus SSO Platform</h1>
